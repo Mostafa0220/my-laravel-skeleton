@@ -62,11 +62,22 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:4|max:25',
             'email' => 'required|email|unique:users',
-            'password' => 'required'
+            'password' => 'required',
+            'avatar' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         
         try {
             $request->merge([ 'password' => bcrypt($request->password) ]);
+            if($request->hasFile('avatar')){
+                
+                $avatarName = 'avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
+                $request->avatar->storeAs('avatars',$avatarName);
+                
+                $request->merge([ 'avatar' => $avatarName ]);
+                  
+        
+            }
+            
             $user = User::create($request->all());
 
             $user->roles()->attach($request->role_id);
@@ -86,7 +97,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {echo Auth::user()->id;exit;
+    {
         if(!Gate::allows('show-user-admin')) {
             return abort(403);
         }

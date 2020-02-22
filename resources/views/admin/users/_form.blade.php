@@ -19,10 +19,14 @@
     {!! Form::File('avatar', [ 'class' => 'form-control','id' => 'avatar' ]) !!}
 </div>
 <div class="media">
-    @if($user->avatar) 
-        <img src="{{ asset('storage/app/avatars/' .$user->avatar) }}" id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+    @if(Route::getCurrentRoute()->getName()=="admin.users.create")
+    <img src="{{ asset('images/avatars/admins/admins.png') }}"  id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
     @else
-        <img src="{{ asset('images/avatars/admins/admins.png') }}"  id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+        @if($user->avatar) 
+            <img src="{{ asset('storage/app/avatars/' .$user->avatar) }}" id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+        @else
+            <img src="{{ asset('images/avatars/admins/admins.png') }}"  id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+        @endif
     @endif
 </div>      
    

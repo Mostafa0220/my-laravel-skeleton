@@ -1,7 +1,9 @@
 @extends('admin.layouts.master')
-@if(!isset($title)) $title ='Edit User' @endif
-
-@section('title', $title)
+@if(empty($title))
+    @section('title', 'Edit User')
+@else
+    @section('title', $title)
+@endif
 
 
 @section('content')
