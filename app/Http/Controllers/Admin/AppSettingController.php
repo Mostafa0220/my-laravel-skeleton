@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Config;
-
+use App\Models\AppSetting;
+use Session;
 use Gate;
 use Storage;
 
-class ConfigController extends Controller
+class AppSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ConfigController extends Controller
             return abort(403);
         } */
 
-        $configs = Config::all();
+        $configs = AppSetting::all();
         if ($configs) {
             foreach ($configs as $c) {
                 $key = $c->field_name;
@@ -31,7 +31,7 @@ class ConfigController extends Controller
             $configs= $arr;
         }
         
-        return view('admin.configs.edit', compact('configs'));
+        return view('admin.settings.edit', compact('configs'));
     }
     /**
      * Update the specified resource in storage.
@@ -41,19 +41,19 @@ class ConfigController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        $configs = Config::all();
+        $configs = AppSetting::all();
         if ($configs) {
             if ($request->input()) {
                 foreach ($request->input() as $key => $value) {
                     if ($key) {
                         if ($key != "_token") {
-                            $row = Config::whereFieldName($key)->first();
+                            $row = AppSetting::whereFieldName($key)->first();
                             
                             if ($row) {
                                 $row->value = $value;
                                 $row->save();
                             } else {
-                                Config::create(['field_name' => $key, 'value' => $value]);
+                                AppSetting::create(['field_name' => $key, 'value' => $value]);
                             }
                         }
                     }
@@ -76,7 +76,7 @@ class ConfigController extends Controller
                         $fileName = $key.time().'.'.request()->$key->getClientOriginalExtension();
                         $request->$key->storeAs($key,$fileName);
                         $value = $fileName;
-                        $row = Config::whereFieldName($key)->first();
+                        $row = AppSetting::whereFieldName($key)->first();
                         if ($row) {
                             
                             $old_file=storage_path('app/'.$key.'/'.$row->value);
@@ -89,12 +89,23 @@ class ConfigController extends Controller
                             $row->save();
                         } 
                         else {
-                            Config::create(['field_name' => $key, 'value' => $value]);
+                            AppSetting::create(['field_name' => $key, 'value' => $value]);
                         }
                 
                     }
                 }
-
+                $configs = AppSetting::get();
+                
+                if($configs){
+                    
+                    foreach ($configs as $c) {
+                        $key = $c->field_name;
+                        $settings[$key] = $c->value;
+                        
+                    }
+                    Session::put("appSettings", (object) $settings);
+                    
+                }
                 flash('Configurations successfully updated', 'success');
                 return redirect()->back();
             }

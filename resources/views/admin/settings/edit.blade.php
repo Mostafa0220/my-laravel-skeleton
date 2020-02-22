@@ -5,15 +5,15 @@
 
 
 
-@section('title', 'Edit Configurations')
+@section('title', 'Edit App Settings')
 
 
 @section('content')
 <div class="section-wrapper">
 
    
-    {!! Form::open([ 'route' => 'admin.configs.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-        @include('admin.configs._form')
+    {!! Form::open([ 'route' => 'admin.settings.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+        @include('admin.settings._form')
     {!! Form::close() !!}
 
 </div>

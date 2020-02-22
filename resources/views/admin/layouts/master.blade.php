@@ -6,10 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ env('APP_NAME') }}</title>
+    <title>
+        @if(Session::get('appSettings')->app_title)
+        {{Session::get('appSettings')->app_title}}
+        @else
+        {{ env('APP_NAME')}}
+        @endif
+        - {{str_replace('-', ' ', ucwords(Request::segment(2)))}}
+        @if(Request::segment(3))
+        :: {{str_replace('-', ' ', ucwords(Request::segment(3)))}}
+        @endif
+    </title>
     
     <link rel="stylesheet" href="{{  asset('/css/admin.css') }}">
-    <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
 
     @stack('styles')
 </head>
@@ -20,7 +29,15 @@
             <div class="container-fluid">
                 <div class="slim-header-left">
                     <h2 class="slim-logo">
-                        <a href="{{ url('/admin/report/dashboard') }}">{{ env('APP_NAME') }}<span>.</span></a>
+                        
+                        <a href="{{ url('/admin/report/dashboard') }}">
+                            @if(Session::get('appSettings')->company_name)
+                                {{Session::get('appSettings')->company_name}}
+                            @else
+                                {{ env('APP_NAME')}}
+                            @endif
+                            <span>.</span>
+                        </a>
                     </h2>
                     <a href="" id="slimSidebarMenu" class="slim-sidebar-menu"><span></span></a>
                 </div>
@@ -68,6 +85,7 @@
                 @yield('footer')
                 <div class="slim-footer mg-t-0">
                     <div class="container-fluid">
+                    
                         <p>{{ now()->format('Y') }} &copy; All Rights Reserved. {{ env('APP_NAME') }}</p>
                     </div>
                 </div>

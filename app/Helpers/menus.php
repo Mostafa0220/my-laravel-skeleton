@@ -44,9 +44,9 @@
 			]
         ],
         [
-            'display' => ' Configurations',
+            'display' => ' Settings',
             'uniqkey' => 'settings.menu',
-            'url' => '/administrator/configurations',
+            'url' => '/administrator/settings',
             'classId' => '',
             'className' => '',
             'classIcon' => 'ion-ios-cog-outline',
