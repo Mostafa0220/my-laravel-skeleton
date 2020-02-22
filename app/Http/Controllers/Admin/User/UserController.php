@@ -231,7 +231,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(!Gate::allows('destroy-user-admin')) {
+            return abort(403);
+        }
+        $user = User::findOrFail($id);
+        
+
+        try {
+            $user->delete();
+
+            flash('Account '. $user->email.' successfully deleted', 'success');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            flash('Failed '. $e->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 
     protected function datatables()
