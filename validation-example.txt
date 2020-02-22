@@ -1,0 +1,6 @@
+'firstname' => 'required',
+'lastname' => 'required|min:4|max:25',
+'email' => 'required|email|unique:users',
+'phone' => 'required|numeric',
+'password' => 'required|min:3|max:20',
+'confirm_password' => 'required|min:3|max:20|same:password',
