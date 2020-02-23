@@ -17,7 +17,7 @@
         :: {{str_replace('-', ' ', ucwords(Request::segment(3)))}}
         @endif
     </title>
-    
+
     <link rel="stylesheet" href="{{  asset('/css/admin.css') }}">
 
     @stack('styles')
@@ -29,7 +29,7 @@
             <div class="container-fluid">
                 <div class="slim-header-left">
                     <h2 class="slim-logo">
-                        
+
                         <a href="{{ url('/admin/report/dashboard') }}">
                             @if(Session::get('appSettings')->company_name)
                                 {{Session::get('appSettings')->company_name}}
@@ -45,8 +45,8 @@
 
                     <div class="dropdown dropdown-c">
                         <a href="#" class="logged-user" data-toggle="dropdown">
-                        @if(\Illuminate\Support\Facades\Auth::user()->avatar)
-                        
+                        @if(auth()->user()->avatar)
+
                             <img src="{{ asset('storage/app/avatars/' .\Illuminate\Support\Facades\Auth::user()->avatar) }}"
                                 alt="">
                         @else
@@ -58,7 +58,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <nav class="nav">
-                                <a href="{{ url('/administrator/users/profile') }}" class="nav-link"><i class="icon ion-person"></i> 
+                                <a href="{{ url('/administrator/users/profile') }}" class="nav-link"><i class="icon ion-person"></i>
                                     View Profile</a>
                                 <a href="{{ url('/administrator/logout') }}" class="nav-link"><i
                                         class="icon ion-forward"></i>  Sign Out</a>
@@ -85,7 +85,7 @@
                 @yield('footer')
                 <div class="slim-footer mg-t-0">
                     <div class="container-fluid">
-                    
+
                         <p>{{ now()->format('Y') }} &copy; All Rights Reserved. {{ env('APP_NAME') }}</p>
                     </div>
                 </div>

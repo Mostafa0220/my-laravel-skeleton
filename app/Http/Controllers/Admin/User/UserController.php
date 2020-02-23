@@ -15,6 +15,11 @@ use DataTables;
 use Gate;
 use Auth;
 use Storage;
+
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class UserController extends Controller
 {
     /**
@@ -65,19 +70,19 @@ class UserController extends Controller
             'password' => 'required',
             'avatar' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-        
+
         try {
             $request->merge([ 'password' => bcrypt($request->password) ]);
             if($request->hasFile('avatar')){
-                
+
                 $avatarName = 'avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
                 $request->avatar->storeAs('avatars',$avatarName);
-                
+
                 $request->merge([ 'avatar' => $avatarName ]);
-                  
-        
+
+
             }
-            
+
             $user = User::create($request->all());
 
             $user->roles()->attach($request->role_id);
@@ -109,7 +114,7 @@ class UserController extends Controller
     public function profile()
     {
         $user = User::findOrFail(Auth::user()->id);
-        
+
         return view('admin.users.show', compact('user'));
     }
 
@@ -124,7 +129,7 @@ class UserController extends Controller
         if(!Gate::allows('edit-user-admin')) {
             return abort(403);
         }
-        
+
         $user = User::findOrFail($id);
         $roles = Role::whereState('active')->pluck('name', 'id');
 
@@ -133,7 +138,7 @@ class UserController extends Controller
     public function editProfile()
     {
         $id=Auth::user()->id;
-        
+
         $user = User::findOrFail($id);
         $roles = Role::whereState('active')->pluck('name', 'id');
         $title='Edit Profile';
@@ -150,8 +155,8 @@ class UserController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
-        
+
+
         try {
            // User::find(auth()->user()->id)->update(['password'=> bcrypt($request->new_password)]);
            User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
@@ -162,7 +167,7 @@ class UserController extends Controller
             flash('Failed '. $e->getMessage(), 'error');
             return redirect()->back();
         }
-        
+
     }
 
     /**
@@ -180,36 +185,36 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users,email,'.$user->id
             ]);
         try {
-            
+
             $user->name = $request->name;
             $user->email = $request->email;
             if ($request->password) {
                 $request->validate([
 
                     'password' => 'min:6',
-        
+
                 ]);
                 $user->password = bcrypt($request->password);
             }
             if($request->hasFile('avatar')){
 
-          
+
 
                 $this->validate($request,[
-        
+
                     'avatar' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        
+
                 ]);
-        
+
                 $avatarName = $user->id.'_avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
                 $request->avatar->storeAs('avatars',$avatarName);
                 $old_avatar=storage_path('app/avatars/'.$user->avatar);
                 // unlink($old_avatar);
                 if(is_file($old_avatar))
                     Storage::delete('avatars/'.$user->avatar);
-                    
+
                 $user->avatar = $avatarName;
-        
+
             }
             $user->save();
             $user->roles()->attach($request->role_id);
@@ -235,7 +240,7 @@ class UserController extends Controller
             return abort(403);
         }
         $user = User::findOrFail($id);
-        
+
 
         try {
             $user->delete();
@@ -248,7 +253,23 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
 
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function import()
+    {
+        Excel::import(new UsersImport,request()->file('file'));
+
+        return back();
+    }
     protected function datatables()
     {
         $user = User::all();
