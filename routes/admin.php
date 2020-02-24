@@ -14,7 +14,7 @@ Route::group([ 'as' => 'admin.' ], function () {
         Route::group(['middleware' => 'access.admin'], function (){
 
 
-            Route::get('users/export', 'User\UserController@export')->name('users.export');
+            Route::get('users/export/{type}', 'User\UserController@export')->name('users.export');
             Route::post('users/import', 'User\UserController@import')->name('users.import');
             Route::get('users/profile', 'User\UserController@profile')->name('profile');
             Route::get('users/edit-profile', 'User\UserController@editProfile')->name('edit-profile');

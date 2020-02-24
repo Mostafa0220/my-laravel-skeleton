@@ -6,7 +6,7 @@ Users
         @csrf
         <div class="row">
             <div class="col-md-4"><input type="file" name="file" id="import-btn"  class="filestyle"></div>
-            <div class="col-md-4"><a class="btn btn-outline-warning" href="{{ route('admin.users.export') }}"><i class='icon ion-upload'></i>  Export </a></div>
+            <div class="col-md-4"><a class="btn btn-outline-warning" href="{!! route('admin.users.export', ['type' => 'xlsx']) !!}"><i class='icon ion-upload'></i>  Export </a></div>
             <div class="col-md-4"><a href="{{ route('admin.users.create') }}" class="btn btn-outline-primary "> <i class="fa fa-plus"></i> Add New </a></div>
         </div>
     </form>
