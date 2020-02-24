@@ -29,6 +29,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+
         if(!Gate::allows('index-user-admin')) {
             return abort(403);
         }
@@ -90,7 +91,7 @@ class UserController extends Controller
             flash('Account '. $user->email.' successfully created', 'success');
             return redirect()->route('admin.users.index');
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'error');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
     }
@@ -164,7 +165,7 @@ class UserController extends Controller
 
             return redirect()->back();
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'error');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
 
@@ -223,7 +224,7 @@ class UserController extends Controller
 
             return redirect()->back();
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'error');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
     }
@@ -249,16 +250,20 @@ class UserController extends Controller
 
             return redirect()->back();
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'error');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
     }
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function export()
+    public function export($type='csv')
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        if (! in_array($type, ['xlsx','xls', 'csv'])) {
+            $type = 'csv';
+        }
+        $fn = 'users'.'-'.date('Y-m-d_H-i-s');
+        return Excel::download(new UsersExport, $fn.'.'.$type);
     }
 
     /**
@@ -266,9 +271,18 @@ class UserController extends Controller
     */
     public function import()
     {
-        Excel::import(new UsersImport,request()->file('file'));
+        $import = new UsersImport;
+        try {
+            Excel::import($import, request()->file('file'));
+            $row_count=$import->getRowCount();
 
-        return back();
+            flash($row_count.' Users successfully imported!', 'success');
+
+            return redirect()->back();
+        }catch (\Exception $e) {
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
+            return redirect()->back();
+        }
     }
     protected function datatables()
     {

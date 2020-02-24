@@ -56,7 +56,7 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         try {
-            $request->merge([ 
+            $request->merge([
                 'slug' => str_slug($request->name),
                 'permissions' => [],
                 'state' => 'active'
@@ -67,7 +67,7 @@ class RoleController extends Controller
             flash('Role '. $role->slug.' successfully created', 'success');
             return redirect()->route('admin.roles.index');
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'errors');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
     }
@@ -100,7 +100,7 @@ class RoleController extends Controller
         if(!Gate::allows('edit-role-admin')) {
             return abort(403);
         }
-        
+
         $role = Role::findOrFail($id);
 
         return view('admin.roles.edit', compact('role'));
@@ -116,19 +116,19 @@ class RoleController extends Controller
     public function update(RoleRequest $request, $id)
     {
         try {
-            $request->merge([ 
+            $request->merge([
             'slug' => str_slug($request->name),
             'permissions' => [],
             'state' => 'active'
             ]);
             $role = Role::findOrFail($id);
             $role->update($request->all());
-            
+
             flash('Role '. $role->email.' successfully updated', 'success');
 
             return redirect()->back();
         } catch (\Exception $e) {
-            flash('Failed '. $e->getMessage(), 'errors');
+            (config('app.env')=='local')?flash('Failed '. $e->getMessage(), 'danger'):flash('Failed! ', 'danger');
             return redirect()->back();
         }
     }

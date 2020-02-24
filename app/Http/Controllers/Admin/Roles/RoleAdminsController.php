@@ -144,12 +144,24 @@ class RoleAdminsController extends Controller
 
         }catch (Exception $e){
 
-            session()->flash('alert', [
-                'type' => 'danger',
-                'messages' => [
-                    $e->getMessage()
-                ]
-            ]);
+            if(config('app.env')=='local'){
+                session()->flash('alert', [
+                    'type' => 'danger',
+                    'messages' => [
+                        $e->getMessage()
+                    ]
+                ]);
+            }
+            else{
+
+                session()->flash('alert', [
+                    'type' => 'danger',
+                    'messages' => [
+                        'Fail!'
+                    ]
+                ]);
+
+            }
 
             return redirect()->back();
 
