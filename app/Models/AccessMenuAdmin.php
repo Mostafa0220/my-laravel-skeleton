@@ -10,5 +10,5 @@ class AccessMenuAdmin extends Model
         'role_id',
         'uniqkey',
         'url'
-      ];
+    ];
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	return [
 		[
@@ -51,4 +51,20 @@
             'className' => '',
             'classIcon' => 'ion-ios-cog-outline',
         ],
+        [
+            'display' => ' Categories',
+            'uniqkey' => 'categories.menu',
+            'url' => '/administrator/categories',
+            'classId' => '',
+            'className' => '',
+            'classIcon' => 'icon ion-filing',
+        ],
+        [
+            'display' => ' Products',
+            'uniqkey' => 'products.menu',
+            'url' => '/administrator/products',
+            'classId' => '',
+            'className' => '',
+            'classIcon' => 'icon ion-ionic',
+        ]
 	];

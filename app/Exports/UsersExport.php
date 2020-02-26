@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exports;
 
 use App\User;
@@ -15,16 +16,17 @@ class UsersExport implements FromCollection, WithHeadings, WithEvents, ShouldAut
     public function headings(): array
     {
         return [
-            '#', 'Name', 'Email', 'Phone','Status','Created'
+            '#', 'Name', 'Email', 'Phone', 'Status', 'Created'
         ];
     }
-     // freeze the first row with headings
-     public function registerEvents(): array
-     {
-         return [
-             AfterSheet::class => function(AfterSheet $event) {
-                 $event->sheet->freezePane('A2', 'A2');
-                 $styleArray = [
+
+    // freeze the first row with headings
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $event->sheet->freezePane('A2', 'A2');
+                $styleArray = [
                     'font' => [
                         'bold' => true,
                     ],
@@ -34,17 +36,17 @@ class UsersExport implements FromCollection, WithHeadings, WithEvents, ShouldAut
                 $event->sheet->getDelegate()->getStyle('A1'); // Set cell A1 as selected
 
 
+            }
+        ];
+    }
 
-             }
-         ];
-     }
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
 
-        $data = User::select('id','name','email','phone_number','state','created_at')->get()->toArray();
+        $data = User::select('id', 'name', 'email', 'phone_number', 'state', 'created_at')->get()->toArray();
 
         return collect($data);
     }

@@ -20,35 +20,38 @@
 </div>
 <div class="media">
     @if(Route::getCurrentRoute()->getName()=="admin.users.create")
-    <img src="{{ asset('images/avatars/admins/admins.png') }}"  id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+        <img src="{{ asset('images/avatars/admins/admins.png') }}" id="preview"
+             style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
     @else
-        @if($user->avatar) 
-            <img src="{{ asset('storage/app/avatars/' .$user->avatar) }}" id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+        @if($user->avatar)
+            <img src="{{ asset('storage/app/avatars/' .$user->avatar) }}" id="preview"
+                 style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
         @else
-            <img src="{{ asset('images/avatars/admins/admins.png') }}"  id="preview"  style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
+            <img src="{{ asset('images/avatars/admins/admins.png') }}" id="preview"
+                 style="max-height:120px;margin-bottom:50px" class="img-responsive center-block">
         @endif
     @endif
-</div>      
-   
+</div>
+
 
 <div class="form-group">
-    <button class="btn btn-primary"> Save </button>
+    <button class="btn btn-primary"> Save</button>
 </div>
 @push('scripts')
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                
-                reader.onload = function(e) {
+
+                reader.onload = function (e) {
                     $('#preview').attr('src', e.target.result);
                 }
-                
+
                 reader.readAsDataURL(input.files[0]);
             }
         }
-            
-        $('#avatar').change(function() {
+
+        $('#avatar').change(function () {
             readURL(this);
         });
 

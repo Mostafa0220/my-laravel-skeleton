@@ -21,11 +21,13 @@ class Role extends Model
         'permissions' => 'collection',
     ];
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function access() {
+    public function access()
+    {
         return $this->hasMany(AccessMenuAdmin::class, 'role_id');
     }
 }

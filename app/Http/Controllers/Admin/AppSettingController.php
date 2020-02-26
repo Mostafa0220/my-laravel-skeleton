@@ -28,19 +28,21 @@ class AppSettingController extends Controller
                 $key = $c->field_name;
                 $arr[$key] = $c->value;
             }
-            $configs= $arr;
+            $configs = $arr;
         }
-        
+
         return view('admin.settings.edit', compact('configs'));
     }
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $configs = AppSetting::all();
         if ($configs) {
             if ($request->input()) {
@@ -48,7 +50,7 @@ class AppSettingController extends Controller
                     if ($key) {
                         if ($key != "_token") {
                             $row = AppSetting::whereFieldName($key)->first();
-                            
+
                             if ($row) {
                                 $row->value = $value;
                                 $row->save();
@@ -59,58 +61,54 @@ class AppSettingController extends Controller
                     }
                 }
 
-                $img_to_upload=['logo','favicon'];
-                for($i=0;$i<count($img_to_upload);$i++){
-                    $key=$img_to_upload[$i];
-                    if($request->hasFile($key)){
-                            
+                $img_to_upload = ['logo', 'favicon'];
+                for ($i = 0; $i < count($img_to_upload); $i++) {
+                    $key = $img_to_upload[$i];
+                    if ($request->hasFile($key)) {
 
 
-                        $this->validate($request,[
-                
-                            $key =>  'mimes:ico,jpeg,png,jpg,gif,svg|max:2048',
-                
+                        $this->validate($request, [
+
+                            $key => 'mimes:ico,jpeg,png,jpg,gif,svg|max:2048',
+
                         ]);
-                        
+
                         //upload logo to storage folder
-                        $fileName = $key.time().'.'.request()->$key->getClientOriginalExtension();
-                        $request->$key->storeAs($key,$fileName);
+                        $fileName = $key . time() . '.' . request()->$key->getClientOriginalExtension();
+                        $request->$key->storeAs($key, $fileName);
                         $value = $fileName;
                         $row = AppSetting::whereFieldName($key)->first();
                         if ($row) {
-                            
-                            $old_file=storage_path('app/'.$key.'/'.$row->value);
-                            
+
+                            $old_file = storage_path('app/' . $key . '/' . $row->value);
+
                             //delete old logo if file exists
-                            if($row->value && is_file($old_file))
-                                Storage::delete($key.'/'.$row->value);
+                            if ($row->value && is_file($old_file))
+                                Storage::delete($key . '/' . $row->value);
 
                             $row->value = $value;
                             $row->save();
-                        } 
-                        else {
+                        } else {
                             AppSetting::create(['field_name' => $key, 'value' => $value]);
                         }
-                
+
                     }
                 }
                 $configs = AppSetting::get();
-                
-                if($configs){
-                    
+
+                if ($configs) {
+
                     foreach ($configs as $c) {
                         $key = $c->field_name;
                         $settings[$key] = $c->value;
-                        
+
                     }
-                    Session::put("appSettings", (object) $settings);
-                    
+                    Session::put("appSettings", (object)$settings);
+
                 }
                 flash('Configurations successfully updated', 'success');
                 return redirect()->back();
             }
-
-
 
 
         }

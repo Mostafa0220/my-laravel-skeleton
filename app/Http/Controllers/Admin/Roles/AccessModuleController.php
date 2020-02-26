@@ -10,40 +10,45 @@ use Permission;
 use App\Models\Role;
 use App\Models\AccessMenuAdmin;
 
-class AccessModuleController extends Controller {
+class AccessModuleController extends Controller
+{
 
     protected $role;
     protected $access;
     protected $permissions;
 
-    public function __construct(Role $role, AccessMenuAdmin $access) {
+    public function __construct(Role $role, AccessMenuAdmin $access)
+    {
         $this->role = $role;
         $this->access = $access;
         $this->permissions = Permission::original();
     }
 
-    public function role() {
+    public function role()
+    {
         $data['roles'] = $this->role->all();
         $data['user'] = auth()->user();
         return view('admin.access.role.role', $data);
     }
 
-    public function role_assign ($id) {
-        if(!Gate::allows('attach-role-access')) {
+    public function role_assign($id)
+    {
+        if (!Gate::allows('attach-role-access')) {
             return abort(403);
         }
         $data['role'] = $this->role->findOrFail($id);
         return view('admin.access.role.assign', $data);
     }
 
-    public function role_assign_update(Request $request, $id) {
-        if(!Gate::allows('attach-role-access')) {
+    public function role_assign_update(Request $request, $id)
+    {
+        if (!Gate::allows('attach-role-access')) {
             return abort(403);
         }
-        if(isset($request->menus) && is_array($request->menus)) {
-            if(count($request->menus) > 0) {
+        if (isset($request->menus) && is_array($request->menus)) {
+            if (count($request->menus) > 0) {
                 $this->access->where('role_id', $id)->delete();
-                foreach($request->menus as $item) {
+                foreach ($request->menus as $item) {
                     $menu = json_decode($item);
                     $this->access->create([
                         'role_id' => $id,
@@ -59,26 +64,31 @@ class AccessModuleController extends Controller {
         return redirect()->back();
     }
 
-    public function permission(){
+    public function permission()
+    {
         $data['roles'] = $this->role->all();
         $data['user'] = auth()->user();
         return view('admin.access.permission.role', $data);
     }
-    public function permission_assign($id){
-        if(!Gate::allows('attach-permission-access')) {
+
+    public function permission_assign($id)
+    {
+        if (!Gate::allows('attach-permission-access')) {
             return abort(403);
         }
         $data['role'] = $this->role->findOrFail($id);
         $data['permissions'] = $this->permissions;
-        
+
         return view('admin.access.permission.assign', $data);
     }
-    public function permission_assign_update(Request $request, $id){
-        if(!Gate::allows('attach-permission-access')) {
+
+    public function permission_assign_update(Request $request, $id)
+    {
+        if (!Gate::allows('attach-permission-access')) {
             return abort(403);
         }
-        if(isset($request->permissions) && is_array($request->permissions)) {
-            if(count($request->permissions) > 0) {
+        if (isset($request->permissions) && is_array($request->permissions)) {
+            if (count($request->permissions) > 0) {
                 $this->role->findOrFail($id)->update([
                     'permissions' => $request->permissions
                 ]);

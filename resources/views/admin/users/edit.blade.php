@@ -7,13 +7,13 @@
 
 
 @section('content')
-<div class="section-wrapper">
+    <div class="section-wrapper">
 
-    {!! Form::model($user, [ 'route' => ['admin.users.update', $user->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data' ]) !!}
+        {!! Form::model($user, [ 'route' => ['admin.users.update', $user->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data' ]) !!}
         @include('admin.users._form')
-    {!! Form::close() !!}
+        {!! Form::close() !!}
 
-</div>
+    </div>
 @endsection
 
 

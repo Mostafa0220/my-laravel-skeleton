@@ -2,11 +2,11 @@
 @section('title', 'Edit Role')
 
 @section('content')
-<div class="section-wrapper">
+    <div class="section-wrapper">
 
-    {!! Form::model($role, [ 'route' => ['admin.roles.update', $role->id], 'method' => 'PUT' ]) !!}
+        {!! Form::model($role, [ 'route' => ['admin.roles.update', $role->id], 'method' => 'PUT' ]) !!}
         @include('admin.roles._form')
-    {!! Form::close() !!}
+        {!! Form::close() !!}
 
-</div>
+    </div>
 @endsection

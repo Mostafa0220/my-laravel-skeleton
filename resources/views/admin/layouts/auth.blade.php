@@ -13,11 +13,11 @@
 </head>
 
 <body>
-    @include('admin.layouts.alert')
-    @yield('content')
-  
-    <script src="{{ asset('/js/admin.js') }}"></script>
-    @stack('scripts')
+@include('admin.layouts.alert')
+@yield('content')
+
+<script src="{{ asset('/js/admin.js') }}"></script>
+@stack('scripts')
 </body>
 
 </html>

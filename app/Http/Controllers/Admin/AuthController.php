@@ -22,7 +22,7 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -31,7 +31,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        
+
         try {
             if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 // flash()->success('Welcome back ' . auth()->user()->name . '!');
@@ -53,7 +53,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        
+
         return redirect()->back();
     }
 }

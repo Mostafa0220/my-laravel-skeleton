@@ -27,6 +27,22 @@ class RoleAdminsController extends Controller
         return view('admin.roles.index');
     }
 
+    protected function datatables()
+    {
+        $roles = Role::all();
+
+        return DataTables::of($roles)
+            ->addColumn('action', function ($role) {
+                return view('admin.roles._button._action', [
+                    'model_button' => $role,
+                    'edit_button' => route('roles.edit', $role->id),
+                    'delete_button' => route('roles.destroy', $role->id),
+                    'url_access_role' => url('administrator/access/role', $role->id),
+                    'url_access_permissions' => url('administrator/access/permission', $role->id),
+                ]);
+            })->escapeColumns([])->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +50,7 @@ class RoleAdminsController extends Controller
      */
     public function create()
     {
-        if(Gate::denies('create-role-admin')) return abort(403);
+        if (Gate::denies('create-role-admin')) return abort(403);
 
         return view('admin.roles.create');
     }
@@ -42,12 +58,12 @@ class RoleAdminsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(RoleStoreRequest $request)
     {
-        if(Gate::denies('create-role-admin')) return abort(403);
+        if (Gate::denies('create-role-admin')) return abort(403);
 
         $role = new Role();
         $role->name = $request->name;
@@ -69,23 +85,23 @@ class RoleAdminsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if(Gate::denies('show-role-admin')) return abort(403);
+        if (Gate::denies('show-role-admin')) return abort(403);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if(Gate::denies('edit-role-admin')) return abort(403);
+        if (Gate::denies('edit-role-admin')) return abort(403);
 
         $role = Role::find($id);
 
@@ -95,13 +111,13 @@ class RoleAdminsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(RoleUpdateRequest $request, $id)
     {
-        if(Gate::denies('edit-role-admin')) return abort(403);
+        if (Gate::denies('edit-role-admin')) return abort(403);
 
         $role = Role::find($id);
         $role->name = $request->name;
@@ -121,14 +137,14 @@ class RoleAdminsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if(Gate::denies('destroy-role-admin')) return abort(403);
+        if (Gate::denies('destroy-role-admin')) return abort(403);
 
-        try{
+        try {
 
             $role = Role::find($id);
             $role->delete();
@@ -142,17 +158,16 @@ class RoleAdminsController extends Controller
 
             return redirect()->route('roles.index');
 
-        }catch (Exception $e){
+        } catch (Exception $e) {
 
-            if(config('app.env')=='local'){
+            if (config('app.env') == 'local') {
                 session()->flash('alert', [
                     'type' => 'danger',
                     'messages' => [
                         $e->getMessage()
                     ]
                 ]);
-            }
-            else{
+            } else {
 
                 session()->flash('alert', [
                     'type' => 'danger',
@@ -166,21 +181,5 @@ class RoleAdminsController extends Controller
             return redirect()->back();
 
         }
-    }
-
-    protected function datatables()
-    {
-        $roles = Role::all();
-
-        return DataTables::of($roles)
-            ->addColumn('action', function ($role){
-                return view('admin.roles._button._action', [
-                    'model_button'      => $role,
-                    'edit_button'       => route('roles.edit', $role->id),
-                    'delete_button'     => route('roles.destroy', $role->id),
-                    'url_access_role'   => url('administrator/access/role', $role->id),
-                    'url_access_permissions'   => url('administrator/access/permission', $role->id),
-                ]);
-            })->escapeColumns([])->make(true);
     }
 }

@@ -2,11 +2,11 @@
 @section('title', 'Create Role')
 
 @section('content')
-<div class="section-wrapper">
+    <div class="section-wrapper">
 
-    {!! Form::open([ 'route' => 'admin.roles.store', 'method' => 'POST']) !!}
+        {!! Form::open([ 'route' => 'admin.roles.store', 'method' => 'POST']) !!}
         @include('admin.roles._form')
-    {!! Form::close() !!}
+        {!! Form::close() !!}
 
-</div>
+    </div>
 @endsection

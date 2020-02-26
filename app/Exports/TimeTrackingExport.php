@@ -53,10 +53,10 @@ class TimeTrackingExport implements FromCollection, WithMapping, WithHeadings, S
     public function registerEvents(): array
     {
         return [
-            BeforeExport::class => function(BeforeExport $event) {
+            BeforeExport::class => function (BeforeExport $event) {
                 $event->writer->getProperties()->setCreator($this->member->name . ' ' . $this->member->surname);
             },
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $styleArray = [
                     'font' => [
                         'bold' => true,

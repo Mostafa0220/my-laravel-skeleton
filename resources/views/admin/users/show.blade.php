@@ -2,80 +2,82 @@
 @section('title', 'User Profile')
 
 @section('content')
-<div class="section-wrapper">
-    <div class="row row-sm">
+    <div class="section-wrapper">
+        <div class="row row-sm">
             <div class="col-lg-8">
                 <div class="card card-profile">
-                <div class="card-body">
-                    <div class="media">
-                    @if(\Illuminate\Support\Facades\Auth::user()->avatar)
-                            <img src="{{ asset('storage/app/avatars/' .\Illuminate\Support\Facades\Auth::user()->avatar) }}"
-                            alt="">    
-                        @else
-                            <img src="{{ asset('images/avatars/admins/admins.png') }}"
-                                alt="">
-                        @endif
-                    
-                    <div class="media-body">
-                        <h3 class="card-profile-name">{{$user->name}}</h3>
-                        <!-- <p class="card-profile-position">Executive Director at <a href="">ThemePixels, Inc.</a></p>
-                        <p>San Francisco, California</p>
+                    <div class="card-body">
+                        <div class="media">
+                            @if(\Illuminate\Support\Facades\Auth::user()->avatar)
+                                <img
+                                    src="{{ asset('storage/app/avatars/' .\Illuminate\Support\Facades\Auth::user()->avatar) }}"
+                                    alt="">
+                            @else
+                                <img src="{{ asset('images/avatars/admins/admins.png') }}"
+                                     alt="">
+                            @endif
 
-                        <p class="mg-b-0">A consummate human capital management professional with international training and talent management implementations experience across the entire universe...<a href="">Read more</a></p> -->
+                            <div class="media-body">
+                                <h3 class="card-profile-name">{{$user->name}}</h3>
+                                <!-- <p class="card-profile-position">Executive Director at <a href="">ThemePixels, Inc.</a></p>
+                                <p>San Francisco, California</p>
+
+                                <p class="mg-b-0">A consummate human capital management professional with international training and talent management implementations experience across the entire universe...<a href="">Read more</a></p> -->
+                            </div>
+                        </div>
                     </div>
+                    <div class="card-footer">
+                        <a href="" class="card-profile-direct"><!-- http://thmpxls.me/profile?id=katherine --></a>
+                        <div>
+                            <a href="{{ url('/administrator/users/edit-profile') }}">Edit Profile</a>
+                            <a href="{{ url('/administrator/users/change-password') }}">Change Password</a>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <a href="" class="card-profile-direct"><!-- http://thmpxls.me/profile?id=katherine --></a>
-                    <div>
-                    <a href="{{ url('/administrator/users/edit-profile') }}">Edit Profile</a>
-                    <a href="{{ url('/administrator/users/change-password') }}">Change Password</a>
-                    </div>
-                </div>
                 </div>
 
                 <ul class="nav nav-activity-profile mg-t-20">
-                <!-- <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-ios-redo tx-purple"></i> Share an update</a></li>
-                <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-image tx-primary"></i> Publish photo</a></li> -->
-                <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-document-text tx-success"></i> Add an article</a></li>
+                    <!-- <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-ios-redo tx-purple"></i> Share an update</a></li>
+                    <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-image tx-primary"></i> Publish photo</a></li> -->
+                    <li class="nav-item"><a href="" class="nav-link"><i class="icon ion-document-text tx-success"></i>
+                            Add an article</a></li>
                 </ul>
 
                 <div class="card card-latest-activity mg-t-20">
-                <!-- <div class="card-body">
-                    <div class="slim-card-title">Latest Activity</div>
-                    <div class="media media-author">
-                    <img src="../img/img1.jpg" alt="">
-                    <div class="media-body">
-                        <h6><a href="">Katherine</a></h6>
-                        <p>Executive Director</p>
-                    </div>
-                    <span>2 hours ago</span>
-                    </div>
-
-                    <p class="activity-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-
-                    <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <a href=""><img src="../img/img16.jpg" class="img-fit-cover" alt=""></a>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="post-wrapper">
-                        <a href="" class="activity-title">Sailing Basics: 10 Nautical &amp; Sailing Terms To Know</a>
-                        <p>Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
-                        <p class="mg-b-0">
-                            <a href="" class="d-block">Charmaine Montuya</a>
-                            <span>Writer &amp; Entrepreneur</span>
-                        </p>
+                    <!-- <div class="card-body">
+                        <div class="slim-card-title">Latest Activity</div>
+                        <div class="media media-author">
+                        <img src="../img/img1.jpg" alt="">
+                        <div class="media-body">
+                            <h6><a href="">Katherine</a></h6>
+                            <p>Executive Director</p>
                         </div>
-                    </div>
-                    </div>
+                        <span>2 hours ago</span>
+                        </div>
 
-                </div> -->
-               <!--  <div class="card-footer">
-                    <a href="">Comment</a>
-                    <a href="">Likes</a>
-                    <a href="">Share</a>
-                </div> -->
+                        <p class="activity-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
+
+                        <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <a href=""><img src="../img/img16.jpg" class="img-fit-cover" alt=""></a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="post-wrapper">
+                            <a href="" class="activity-title">Sailing Basics: 10 Nautical &amp; Sailing Terms To Know</a>
+                            <p>Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
+                            <p class="mg-b-0">
+                                <a href="" class="d-block">Charmaine Montuya</a>
+                                <span>Writer &amp; Entrepreneur</span>
+                            </p>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div> -->
+                    <!--  <div class="card-footer">
+                         <a href="">Comment</a>
+                         <a href="">Likes</a>
+                         <a href="">Share</a>
+                     </div> -->
                 </div>
 
                 <!-- <div class="card card-experience mg-t-20">
@@ -224,41 +226,41 @@
                 </div> -->
 
                 <div class="card pd-25 mg-t-0">
-                <div class="slim-card-title mg-t-20">Contact &amp; Personal Info</div>
+                    <div class="slim-card-title mg-t-20">Contact &amp; Personal Info</div>
 
-                <div class="media-list mg-t-25">
-                    <!-- <div class="media">
-                    <div><i class="icon ion-link tx-24 lh-0"></i></div>
-                    <div class="media-body mg-l-15 mg-t-4">
-                        <h6 class="tx-14 tx-gray-700">Websites</h6>
-                        <a href="" class="d-block">http://themepixels.me</a>
-                        <a href="" class="d-block">http://themeforest.net</a>
-                    </div>
-                    </div> -->
-                    <div class="media mg-t-25">
-                    
-                    <!--<div><i class="icon ion-ios-telephone-outline tx-24 lh-0"></i></div> <div class="media-body mg-l-15 mg-t-4">
-                        <h6 class="tx-14 tx-gray-700">Phone Number</h6>
-                        <span class="d-block">+1 234 5678 910</span>
-                    </div> -->
-                    </div>
-                    <div class="media mg-t-25">
-                    <div><i class="icon ion-ios-email-outline tx-24 lh-0"></i></div>
-                    <div class="media-body mg-l-15 mg-t-4">
-                        <h6 class="tx-14 tx-gray-700">Email Address</h6>
-                        <span class="d-block">{{$user->email}}</span>
-                    </div>
-                    </div>
-                    <!-- <div class="media mg-t-25">
-                    <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
-                    <div class="media-body mg-l-15 mg-t-2">
-                        <h6 class="tx-14 tx-gray-700">Twitter</h6>
-                        <a href="#" class="d-block">@themepixels</a>
-                    </div>
-                    </div> -->
-                </div><!-- media-list -->
+                    <div class="media-list mg-t-25">
+                        <!-- <div class="media">
+                        <div><i class="icon ion-link tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Websites</h6>
+                            <a href="" class="d-block">http://themepixels.me</a>
+                            <a href="" class="d-block">http://themeforest.net</a>
+                        </div>
+                        </div> -->
+                        <div class="media mg-t-25">
+
+                            <!--<div><i class="icon ion-ios-telephone-outline tx-24 lh-0"></i></div> <div class="media-body mg-l-15 mg-t-4">
+                                <h6 class="tx-14 tx-gray-700">Phone Number</h6>
+                                <span class="d-block">+1 234 5678 910</span>
+                            </div> -->
+                        </div>
+                        <div class="media mg-t-25">
+                            <div><i class="icon ion-ios-email-outline tx-24 lh-0"></i></div>
+                            <div class="media-body mg-l-15 mg-t-4">
+                                <h6 class="tx-14 tx-gray-700">Email Address</h6>
+                                <span class="d-block">{{$user->email}}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="media mg-t-25">
+                        <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-2">
+                            <h6 class="tx-14 tx-gray-700">Twitter</h6>
+                            <a href="#" class="d-block">@themepixels</a>
+                        </div>
+                        </div> -->
+                    </div><!-- media-list -->
                 </div>
             </div>
-            </div>
+        </div>
     </div>
 @endsection

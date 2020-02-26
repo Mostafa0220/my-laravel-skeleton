@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exports;
 
 use App\User;
@@ -37,10 +38,10 @@ class CustomExport implements FromArray, ShouldAutoSize, WithColumnFormatting, W
     public function registerEvents(): array
     {
         return [
-            BeforeExport::class => function(BeforeExport $event) {
+            BeforeExport::class => function (BeforeExport $event) {
                 $event->writer->getProperties()->setCreator(config('app.name'));
             },
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $styleArray = [
                     'font' => [
                         'bold' => true,

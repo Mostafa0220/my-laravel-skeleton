@@ -3,12 +3,12 @@
         <li class="breadcrumb-item">
             <a href="{{ route('admin.dashboard.index') }}">Home</a>
         </li>
-        
+
         @for( $i = 2; $i <= count(Request::segments()); $i++)
             <li class="breadcrumb-item">
                 <a href="{{ URL::to( implode( '/', array_slice(Request::segments(), 0 ,$i, true))) }}">
                     {{ ucwords(str_replace('-', ' ', Request::segment($i))) }}
-                 </a>
+                </a>
             </li>
         @endfor
     </ol>

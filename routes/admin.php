@@ -9,7 +9,12 @@ Route::group([ 'as' => 'admin.' ], function () {
 
         Route::get('/', 'DashboardController@index')->name('dashboard.index');
         Route::get('/logout', 'AuthController@logout');
-        Route::resource('settings', 'AppSettingController');
+        Route::resources([
+            'settings' => 'AppSettingController',
+            'categories' => 'CategoryController',
+            'products' => 'ProductController'
+        ]);
+
 
         Route::group(['middleware' => 'access.admin'], function (){
 
