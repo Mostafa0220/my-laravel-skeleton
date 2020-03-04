@@ -14,7 +14,9 @@ Route::group([ 'as' => 'admin.' ], function () {
             'categories' => 'CategoryController',
             'products' => 'ProductController'
         ]);
+        Route::get('file-upload', 'User\UserController@file_upload');
 
+        Route::post('users/upload', 'User\UserController@upload')->name('admin.upload');
 
         Route::group(['middleware' => 'access.admin'], function (){
 

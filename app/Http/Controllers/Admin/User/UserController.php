@@ -15,6 +15,7 @@ use DataTables;
 use Gate;
 use Auth;
 use Storage;
+use Validator;
 
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
@@ -137,7 +138,34 @@ class UserController extends Controller
 
         return view('admin.users.show', compact('user'));
     }
+    function file_upload(){
+        return view('admin.users.file_upload');
+    }
+    function upload(Request $request)
+    {
+     $rules = array(
+      'file'  => 'required|image|max:2048'
+     );
 
+     $error = Validator::make($request->all(), $rules);
+
+     if($error->fails())
+     {
+      return response()->json(['errors' => $error->errors()->all()]);
+     }
+
+     $image = $request->file('file');
+
+     $new_name = rand() . '.' . $image->getClientOriginalExtension();
+     $image->move(public_path('images'), $new_name);
+
+     $output = array(
+         'success' => 'Image uploaded successfully',
+         'image'  => '<img src="'.env('APP_URL').'/images/'.$new_name.'" class="img-thumbnail" />'
+        );
+
+        return response()->json($output);
+    }
     /**
      * Show the form for editing the specified resource.
      *
