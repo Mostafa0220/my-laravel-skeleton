@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>
-        @if(Session::get('appSettings')->app_title)
+    <title>{{ env('APP_NAME')}}
+        {{-- @if(Session::get('appSettings')->app_title)
             {{Session::get('appSettings')->app_title}}
         @else
             {{ env('APP_NAME')}}
-        @endif
+        @endif --}}
         - {{str_replace('-', ' ', ucwords(Request::segment(2)))}}
         @if(Request::segment(3))
             :: {{str_replace('-', ' ', ucwords(Request::segment(3)))}}
@@ -31,11 +31,12 @@
                 <h2 class="slim-logo">
 
                     <a href="{{ url('/admin/report/dashboard') }}">
-                        @if(Session::get('appSettings')->company_name)
+                        {{ env('APP_NAME')}}
+                        {{-- @if(Session::get('appSettings')->company_name)
                             {{Session::get('appSettings')->company_name}}
                         @else
                             {{ env('APP_NAME')}}
-                        @endif
+                        @endif --}}
                         <span>.</span>
                     </a>
                 </h2>
